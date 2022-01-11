@@ -3,10 +3,35 @@
 
 ; data_utils.aia
 ; Utility functions for converting data.
+; 
+; ------------------------------------
+; Member Subroutines
+;  - strToInt
+;  - digitToNumber
+;  - intToString
+;  - stringLength
+;  - stringCompare
 ;
+; ------------------------------------
 ; THIS FILE IS PART OF THE AIA4 STDLIB
 ; LICENSED UNDER ISC LICENSE
-; COPYRIGHT (C) 2021 GansGruppe
+; Copyright (C) 2021 GansGruppe
+; Copyright (C) 2021 TEIWAZ
+; 
+; Permission to use, copy, modify, and/or distribute
+; this software for any purpose  with or without fee 
+; is hereby granted, provided that the above 
+; copyright notice  and this permission notice appear 
+; in all copies.
+; 
+; THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR
+; DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE
+; INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. 
+; IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, 
+; INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER
+; RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION
+; OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF 
+; OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 ; ------------------------------------
 
 
@@ -250,12 +275,12 @@
     jmp _stringCompareRD
   
   :stringCompareRD
-    pop $0 ; Restore Data
-    pop $1
-    pop $2
-    pop $3
-    pop $4
-    pop $5
+    pop $7 ; Restore Data
     pop $6
-    pop $7
+    pop $5
+    pop $4
+    pop $3
+    pop $2
+    pop $1
+    pop $0
     ret
