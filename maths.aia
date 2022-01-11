@@ -2,19 +2,47 @@
 
 ; data_utils.aia
 ; Utility functions for calculations
+; 
+; ------------------------------------
+; Member Subroutines
+;  - divisionRemainder OR modulo
+;  - sqrt
+;  - min
+;  - pow
 ;
+; ------------------------------------
 ; THIS FILE IS PART OF THE AIA4 STDLIB
 ; LICENSED UNDER ISC LICENSE
-; COPYRIGHT (C) 2021 GansGruppe
+; Copyright (C) 2021 GansGruppe
+; Copyright (C) 2021 TEIWAZ
+; 
+; Permission to use, copy, modify, and/or distribute
+; this software for any purpose  with or without fee 
+; is hereby granted, provided that the above 
+; copyright notice  and this permission notice appear 
+; in all copies.
+; 
+; THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR
+; DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE
+; INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. 
+; IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, 
+; INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER
+; RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION
+; OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF 
+; OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 ; ------------------------------------
 
 
-; description: Calculates the remainder of a Integer Division (Modulus)
+; Alias: modulo, divisionRemainder
+; description: Calculates the remainder of a Integer Division
 ; memory:      Uses default memory from $0-$2, previous data
 ;              is temporarly saved to stack.
 ;              Result is left in accumulator.
 ; parameter:   Expects dividend at register $8 and divisor at $9
 ; author:      0x1111
+:modulo
+  cal _divisionRemainder
+  ret
 :divisionRemainder
   ; Save previous data
   push $0
@@ -138,3 +166,42 @@
   
   ret
 
+; description: Exponential Function
+; memory:      Uses default memory from $0-$4, previous data
+;              is temporarly saved to stack.
+;              Result is left in accumulator.
+; parameter:   Expects Base at Register $8 and Exponent at register $9
+; author:      0x1111
+:pow
+  push $0
+  push $1
+  push $2
+  push $3
+  push $4
+  
+  ;   $0 0x0 ; $0 Current Value
+  cpr $8 $1  ; $1 Base
+  cpr $9 $2  ; $2 Exponent
+  set $3 0x1 ; $3 Decrementor
+  ;   $4 0x0 ; $4 Floor
+  
+  cpm $1 $0  ; Copy Base to Current Value for Start
+  sub $2 $3  ; Lower Exponent by 1 for propper looping
+  cpr $1 $2
+  
+  :powLP
+    mul $0 $1 ; CurrentValue * Base
+    cpr $1 $0 ; Copy
+    
+    sub $2 $3 ; Decrement Counter
+    cpr $1 $2 
+    cmp $2 $4 ; Is Zero?
+    jg _powLP ; No? Continue Loop
+  
+  sreg $1 $0 ; Store Result
+  pop $4     ; Restore Data
+  pop $3
+  pop $2
+  pop $1
+  pop $0
+  ret
